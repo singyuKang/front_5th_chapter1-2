@@ -36,15 +36,13 @@ export function createElement(vNode) {
 
   if (vNode.props) {
     for (const [key, value] of Object.entries(vNode.props)) {
-      if (key !== "children") {
-        if (value !== undefined && value !== null) {
-          if (key === "className") {
-            element.setAttribute("class", value);
-          }
+      if (value !== undefined && value !== null) {
+        if (key === "className") {
+          element.setAttribute("class", value);
+        }
 
-          if (key !== "className") {
-            element.setAttribute(key, value);
-          }
+        if (key !== "className") {
+          element.setAttribute(key, value);
         }
       }
     }
