@@ -1,24 +1,28 @@
+// eventMap
+//  ├── button
+//  │    ├── "click" → { handleClick }
+
+// rootEventMap
+//  ├── "click" → rootListener (document.body에 이벤트 등록)
 const eventMap = new Map();
+const rootEventMap = new Map();
 
 export function setupEventListeners(root) {
-  const EVENT = ["click", "mouseover", "focus", "keydown", "keyup", "keypress"];
-
-  EVENT.forEach((eventName) => {
-    root.addEventListener(eventName, (e) => {
-      let target = e.target;
-
-      while (target && target !== root) {
-        if (eventMap.has(target) && eventMap.get(target).has(eventName)) {
-          // 이벤트 핸들러가 이미 실행되었다면 추가 실행하지 않음
-          if (e.__handled) return;
-          e.__handled = true;
-
-          eventMap.get(target).get(eventName)(e);
-          return;
+  rootEventMap.forEach((listener, eventType) => {
+    if (listener) return;
+    const rootListener = (event) => {
+      let target = event.target;
+      while (target) {
+        const handlersMap = eventMap.get(target);
+        if (handlersMap && handlersMap.has(event.type)) {
+          handlersMap.get(event.type).forEach((handler) => handler(event));
         }
-        target = target.parentElement;
+        if (target === event.currentTarget) break;
+        target = target.parentNode;
       }
-    });
+    };
+    rootEventMap.set(eventType, rootListener);
+    root.addEventListener(eventType, rootListener);
   });
 }
 
@@ -26,16 +30,33 @@ export function addEvent(element, eventType, handler) {
   if (!eventMap.has(element)) {
     eventMap.set(element, new Map());
   }
-  const elementEvents = eventMap.get(element);
-
-  // 중복 등록 방지: 같은 이벤트가 등록되어 있다면 추가하지 않음
-  if (!elementEvents.has(eventType)) {
-    elementEvents.set(eventType, handler);
+  const handlersMap = eventMap.get(element);
+  if (!handlersMap.has(eventType)) {
+    handlersMap.set(eventType, new Set());
+  }
+  handlersMap.get(eventType).add(handler);
+  if (!rootEventMap.has(eventType)) {
+    rootPreRegister(eventType);
   }
 }
 
-export function removeEvent(element, eventType) {
-  if (eventMap.has(element)) {
-    eventMap.get(element).delete(eventType);
+function rootPreRegister(eventType) {
+  rootEventMap.set(eventType, null);
+  setupEventListeners(document.body);
+}
+
+export function removeEvent(element, eventType, handler) {
+  const handlersMap = eventMap.get(element);
+  if (!handlersMap) return;
+
+  const handlers = handlersMap.get(eventType);
+  if (!handlers) return;
+
+  handlers.delete(handler);
+  if (handlers.size === 0) {
+    handlersMap.delete(eventType);
+    if (handlersMap.size === 0) {
+      eventMap.delete(element);
+    }
   }
 }
