@@ -26,6 +26,36 @@ export function setupEventListeners(root) {
   });
 }
 
+export function setupEventListenersCapturing(root) {
+  rootEventMap.forEach((listener, eventType) => {
+    if (listener) return;
+
+    const rootListener = (event) => {
+      // 이벤트 발생 요소부터 시작
+      traverseDown(event.target, event);
+    };
+
+    rootEventMap.set(eventType, rootListener);
+    root.addEventListener(eventType, rootListener);
+  });
+}
+
+// 하위 요소로 이벤트를 전파하는 함수
+export function traverseDown(element, event) {
+  // 현재 요소의 이벤트 핸들러 실행
+  const handlersMap = eventMap.get(element);
+  if (handlersMap && handlersMap.has(event.type)) {
+    handlersMap.get(event.type).forEach((handler) => handler(event));
+  }
+
+  // 자식 요소들에 대해 재귀적으로 적용
+  if (element.children && element.children.length > 0) {
+    Array.from(element.children).forEach((child) => {
+      traverseDown(child, event);
+    });
+  }
+}
+
 export function addEvent(element, eventType, handler) {
   if (!eventMap.has(element)) {
     eventMap.set(element, new Map());

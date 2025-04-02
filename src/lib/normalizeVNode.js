@@ -1,6 +1,4 @@
 export function normalizeVNode(vNode) {
-  // console.log("🚀 ~ normalizeVNode ~ vNode:", vNode);
-
   // 1. null, undefined, boolean인 경우 빈 문자열 반환
   if (vNode === null || vNode === undefined || typeof vNode === "boolean") {
     return "";
