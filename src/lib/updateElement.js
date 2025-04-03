@@ -69,8 +69,8 @@ export function updateElement(parentElement, newNode, oldNode, index = 0) {
   );
 
   // 6. newNode와 oldNode의 모든 자식 태그를 순회하며 1 ~ 5의 내용을 반복한다.
-  const newNodeChLength = newNode.children.length ?? 0;
-  const oldNodeChLenght = oldNode.children.length ?? 0;
+  const newNodeChLength = newNode.children?.length ?? 0;
+  const oldNodeChLenght = oldNode.children?.length ?? 0;
   const maxLength = Math.max(newNodeChLength, oldNodeChLenght);
   for (let i = 0; i < maxLength; i++) {
     updateElement(

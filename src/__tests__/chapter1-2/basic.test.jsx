@@ -1,9 +1,11 @@
 /** @jsx createVNode */
+/** @jsxFrag Fragment */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   addEvent,
   createElement,
   createVNode,
+  Fragment,
   normalizeVNode,
   removeEvent,
   renderElement,
@@ -394,6 +396,53 @@ describe("Chapter1-2 > 기본과제 > 가상돔 만들기 > ", () => {
       expect(result.childNodes[0].childNodes[0].tagName).toBe("A");
       expect(result.childNodes[0].childNodes[1].tagName).toBe("B");
       expect(result.childNodes[1].tagName).toBe("P");
+    });
+
+    it("Fragment createVNode 생성", () => {
+      const result = createVNode(
+        Fragment,
+        null,
+        createVNode("span", null, "fragment"),
+        createVNode("p", null, "문단"),
+      );
+
+      expect(result).toEqual([
+        { type: "span", props: null, children: ["fragment"] },
+        { type: "p", props: null, children: ["문단"] },
+      ]);
+    });
+
+    it("fragment 구조를 처리해야 한다. createElement Babel이용", () => {
+      const result = createElement(
+        <>
+          <span>fragment</span>
+          <p>문단</p>
+        </>,
+      );
+      expect(result instanceof DocumentFragment).toBe(true);
+      expect(result.childNodes.length).toBe(2);
+      expect(result.childNodes[0].tagName).toBe("SPAN");
+      expect(result.childNodes[0].textContent).toBe("fragment");
+      expect(result.childNodes[1].tagName).toBe("P");
+      expect(result.childNodes[1].textContent).toBe("문단");
+    });
+
+    it("fragment 구조를 처리해야 한다. createElement vanila", () => {
+      const result = createElement({
+        type: Fragment,
+        props: {},
+        children: [
+          { type: "span", props: {}, children: ["fragment"] },
+          { type: "p", props: {}, children: ["문단"] },
+        ],
+      });
+
+      expect(result instanceof DocumentFragment).toBe(true);
+      expect(result.childNodes.length).toBe(2);
+      expect(result.childNodes[0].tagName).toBe("SPAN");
+      expect(result.childNodes[0].textContent).toBe("fragment");
+      expect(result.childNodes[1].tagName).toBe("P");
+      expect(result.childNodes[1].textContent).toBe("문단");
     });
 
     it("혼합 콘텐츠(텍스트와 요소)를 처리해야 한다", () => {

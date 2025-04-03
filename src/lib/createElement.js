@@ -1,5 +1,7 @@
 import { addEvent } from "./eventManager";
 
+export const Fragment = Symbol("Fragment");
+
 export function createElement(vNode) {
   // 1. vNode가 null, undefined, boolean 일 경우, 빈 텍스트 노드를 반환합니다.
   if (vNode === null || vNode === undefined || typeof vNode === "boolean") {
@@ -22,6 +24,18 @@ export function createElement(vNode) {
     return fragment;
   }
 
+  // Fragment 처리 - type이 Fragment일 경우 DocumentFragment를 생성합니다
+  if (vNode.type === Fragment) {
+    const fragment = document.createDocumentFragment();
+    if (vNode.children && Array.isArray(vNode.children)) {
+      for (const child of vNode.children) {
+        const childElement = createElement(child);
+        fragment.appendChild(childElement);
+      }
+    }
+    return fragment;
+  }
+
   // 4. 위 경우가 아니면 실제 DOM 요소를 생성합니다:
   //     - vNode.type에 해당하는 요소를 생성
   //     - vNode.props의 속성들을 적용 (이벤트 리스너, className, 일반 속성 등 처리)
@@ -33,8 +47,6 @@ export function createElement(vNode) {
       $element.appendChild(childElement);
     }
   }
-
-  updateAttributes($element, vNode.props);
 
   if (vNode.props) {
     for (const [key, value] of Object.entries(vNode.props)) {
@@ -56,5 +68,3 @@ export function createElement(vNode) {
 
   return $element;
 }
-// eslint-disable-next-line no-unused-vars
-function updateAttributes($el, props) {}
