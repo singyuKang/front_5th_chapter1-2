@@ -369,13 +369,13 @@ export function traverseDown(element, event) {
 3. `가장 아래있는 애`가 이벤트 발생시 `자신만 이벤트`가 발생하니?
 
 테스트 코드는 성공적으로 통과가 되었으며 아래까지 이벤트가 잘 작동하는 것을 확인할 수 있습니다.
-<img width="327" alt="스크린샷 2025-04-03 오후 11 09 43" src="https://github.com/user-attachments/assets/8e037643-f771-4c0f-b32e-fc2cdaab525c" />
-
+<img width="327" height="151" alt="Image" src="https://github.com/user-attachments/assets/a8c1e2d4-fe6a-4089-8470-1acd805cc359" />
 
 # (4) `fragment`처리
 
 멘토링 시간에 코치님이 AI관련된 질문을 받았었는데 AI를 활용하여 `React의 fragment`에 대한 처리를 한번 해보면 재밌지 않겠냐 라고 말씀하셔서 한번 해볼까? 하고 진행을 해보았습니다.
-![스크린샷 2025-04-03 오후 4 59 17](https://github.com/user-attachments/assets/432f9059-5ecd-4ec9-b936-432915976d77)
+<img width="606" height="167" alt="Image" src="https://github.com/user-attachments/assets/fd234fd1-e3f4-482b-849a-2189cfc9dd07" />
+
 Fragment React 자료 : https://react.dev/reference/react/Fragment
 실제로 React는 Fragment는 실제 DOM에 추가하지 않고 Fragment안에 있는 자식 요소들만 상위 요소에 직접 연결하는 방식을 사용한다고 합니다.(다른 방식으로 되는경우가 있는지 확인 필요)
 
@@ -462,8 +462,8 @@ export const LoginPage = () => {
     </>
 }
 ```
-![스크린샷 2025-04-03 오후 5 08 36](https://github.com/user-attachments/assets/e589ec95-a115-45b8-93e9-b6cfef1c5537)
-![스크린샷 2025-04-03 오후 5 08 54](https://github.com/user-attachments/assets/0f3e8f33-4ed6-403f-bfb5-06990b042589)
+<img width="698" height="499" alt="Image" src="https://github.com/user-attachments/assets/d92850a2-8b93-4665-a8c4-7d070fe964fe" />
+<img width="552" height="154" alt="Image" src="https://github.com/user-attachments/assets/390c6dd6-68e4-45c9-95c0-338bb26b7b29" />
 
 실제 `LoginPage`에 `React`처럼 `Fragment`를 집어 넣어봤으며 사진을 통해 알맞은 요소를 반환해 주는 것을 확인하실 수 있습니다.
 
@@ -501,7 +501,7 @@ export const LoginPage = () => {
 ```
 테스트 코드로 `createVNode`, `createElement Babel`이용 하는 방식으로 작성을 하였으며 
 `Fragment`에 대한 처리를 해주는 것을 확인하실 수 있습니다.
-<img width="361" alt="스크린샷 2025-04-03 오후 11 10 30" src="https://github.com/user-attachments/assets/270bdfdf-df12-4fcd-8157-b92a33aaeb03" />
+<img width="361" height="314" alt="Image" src="https://github.com/user-attachments/assets/2c17ed42-9da8-4da3-bdc1-b7496dabe02d" />
 
 
 ## 리뷰 받고 싶은 내용
